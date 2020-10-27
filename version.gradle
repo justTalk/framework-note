@@ -1,0 +1,6 @@
+
+ext{
+    core = [
+            lifecycle : "2.2.0"
+    ]
+}

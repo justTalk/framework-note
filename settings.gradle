@@ -1,2 +1,3 @@
+include ':acore'
 include ':app'
 rootProject.name='framework-note'
