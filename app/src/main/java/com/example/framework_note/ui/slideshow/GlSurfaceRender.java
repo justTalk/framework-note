@@ -36,7 +36,7 @@ public class GlSurfaceRender implements GLSurfaceView.Renderer {
     //每个float数据占字节数
     private static final int BYTES_PER_FLOAT = 4;
     //每个顶点的分量个数
-    private static final int POSITION_COMPONENT_COUNT = 2;
+    private static final int POSITION_COMPONENT_COUNT = 4;
     private static final int COLOR_COMPONENT_COUNT = 3;
     private static final int STRIDE = (POSITION_COMPONENT_COUNT + COLOR_COMPONENT_COUNT) * BYTES_PER_FLOAT;
     private static final String A_COLOR = "a_Color";
@@ -46,20 +46,21 @@ public class GlSurfaceRender implements GLSurfaceView.Renderer {
 
     //逆时针顺序定义顶点
     private float[] tableVertices = {
-            0f, 0f, 1f, 1f, 1f,
-            -0.5f,-0.8f, 0.7f, 0.7f, 0.7f,
-            0.5f,-0.8f, 0.7f, 0.7f, 0.7f,
-            0.5f, 0.8f, 0.7f, 0.7f, 0.7f,
-            -0.5f, 0.8f, 0.7f, 0.7f, 0.7f,
-            -0.5f, -0.8f, 0.7f, 0.7f, 0.7f,
+            //order of coordinates x, y, z, w, r, g, b
+            0f, 0f, 0f, 1.5f, 1f, 1f, 1f,
+            -0.5f,-0.8f, 0f, 1f, 0.7f, 0.7f, 0.7f,
+            0.5f,-0.8f, 0f, 1f, 0.7f, 0.7f, 0.7f,
+            0.5f, 0.8f, 0f, 2f, 0.7f, 0.7f, 0.7f,
+            -0.5f, 0.8f, 0f, 2f, 0.7f, 0.7f, 0.7f,
+            -0.5f, -0.8f, 0f, 1f,0.7f, 0.7f, 0.7f,
 
             //line
-            -0.5f, 0f,1f, 0f, 0f,
-            0.5f, 0f,1f, 0f, 0f,
+            -0.5f, 0f, 0f, 1.5f, 1f, 0f, 0f,
+            0.5f, 0f, 0f, 1.5f, 1f, 0f, 0f,
 
             //ball
-            0f, -0.25f, 0f, 0f, 1f,
-            0f, 0.25f,1f, 0f, 0f,
+            0f, -0.25f, 0f, 1.25f, 0f, 0f, 1f,
+            0f, 0.25f, 0f, 1.75f,1f, 0f, 0f,
     };
 
     private FloatBuffer floatBuffer;
