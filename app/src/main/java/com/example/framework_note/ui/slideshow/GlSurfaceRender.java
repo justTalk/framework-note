@@ -3,6 +3,7 @@ package com.example.framework_note.ui.slideshow;
 import android.content.Context;
 import android.opengl.GLES20;
 import android.opengl.GLSurfaceView;
+import android.opengl.Matrix;
 import android.util.Log;
 
 import com.example.framework_note.BuildConfig;
@@ -40,15 +41,17 @@ public class GlSurfaceRender implements GLSurfaceView.Renderer {
     private static final int STRIDE = (POSITION_COMPONENT_COUNT + COLOR_COMPONENT_COUNT) * BYTES_PER_FLOAT;
     private static final String A_COLOR = "a_Color";
     private static final String A_POSITION = "a_Position";
+    private static final String U_MATRIX = "u_Matrix";
+    private static final float[] uMatrix = new float[16];
 
     //逆时针顺序定义顶点
     private float[] tableVertices = {
             0f, 0f, 1f, 1f, 1f,
-            -0.5f,-0.5f, 0.7f, 0.7f, 0.7f,
-            0.5f,-0.5f, 0.7f, 0.7f, 0.7f,
-            0.5f, 0.5f, 0.7f, 0.7f, 0.7f,
-            -0.5f, 0.5f, 0.7f, 0.7f, 0.7f,
-            -0.5f, -0.5f, 0.7f, 0.7f, 0.7f,
+            -0.5f,-0.8f, 0.7f, 0.7f, 0.7f,
+            0.5f,-0.8f, 0.7f, 0.7f, 0.7f,
+            0.5f, 0.8f, 0.7f, 0.7f, 0.7f,
+            -0.5f, 0.8f, 0.7f, 0.7f, 0.7f,
+            -0.5f, -0.8f, 0.7f, 0.7f, 0.7f,
 
             //line
             -0.5f, 0f,1f, 0f, 0f,
@@ -63,6 +66,7 @@ public class GlSurfaceRender implements GLSurfaceView.Renderer {
     private int program;
     private int aPositionLocation;
     private int aColorLocation;
+    private int uMatrixLocation;
     private Context context;
 
     public GlSurfaceRender(Context context){
@@ -95,6 +99,7 @@ public class GlSurfaceRender implements GLSurfaceView.Renderer {
         aColorLocation = GLES20.glGetAttribLocation(program, A_COLOR);
         //获取属性位置
         aPositionLocation = GLES20.glGetAttribLocation(program, A_POSITION);
+        uMatrixLocation = GLES20.glGetUniformLocation(program, U_MATRIX);
         //充值数据读取位置
         floatBuffer.position(0);
         //告诉OpenGl a_Position属性的数据来源 每个顶点的分量数量 分量数据类型
@@ -120,6 +125,12 @@ public class GlSurfaceRender implements GLSurfaceView.Renderer {
         Log.d(TAG, "onSurfaceChanged   -> " + width + " height -> " + height);
         //设置渲染（Surface）窗口大小
         GLES20.glViewport(0, 0, width, height);
+        float aspectRatio = width > height ? (float) width / (float)height : (float)height / (float)width;
+        if (width > height) {
+            Matrix.orthoM(uMatrix, 0, -aspectRatio, aspectRatio, -1f, 1f, -1f, 1f);
+        }else {
+            Matrix.orthoM(uMatrix, 0, -1f, 1f, -aspectRatio, aspectRatio, -1f, 1f);
+        }
     }
 
     @Override
@@ -127,6 +138,7 @@ public class GlSurfaceRender implements GLSurfaceView.Renderer {
         Log.d(TAG, "onDrawFrame   -> ");
         //清屏 该操作之后就会设置屏幕为之前设置的清屏颜色
         GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT);
+        GLES20.glUniformMatrix4fv(uMatrixLocation, 1, false, uMatrix, 0);
         GLES20.glDrawArrays(GLES20.GL_TRIANGLE_FAN, 0, 6);
         GLES20.glDrawArrays(GLES20.GL_LINES, 6, 2);
         GLES20.glDrawArrays(GLES20.GL_POINTS, 8, 1);
