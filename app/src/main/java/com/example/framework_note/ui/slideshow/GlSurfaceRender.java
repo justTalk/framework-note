@@ -9,6 +9,7 @@ import android.util.Log;
 import com.example.framework_note.BuildConfig;
 import com.example.framework_note.R;
 import com.example.framework_note.opengl.GlUtils;
+import com.example.framework_note.opengl.MatrixHelper;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
@@ -42,7 +43,8 @@ public class GlSurfaceRender implements GLSurfaceView.Renderer {
     private static final String A_COLOR = "a_Color";
     private static final String A_POSITION = "a_Position";
     private static final String U_MATRIX = "u_Matrix";
-    private static final float[] uMatrix = new float[16];
+    private final float[] uMatrix = new float[16];
+    private final float[] modelMatrix = new float[16];
 
     //逆时针顺序定义顶点
     private float[] tableVertices = {
@@ -125,13 +127,22 @@ public class GlSurfaceRender implements GLSurfaceView.Renderer {
     public void onSurfaceChanged(GL10 gl, int width, int height) {
         Log.d(TAG, "onSurfaceChanged   -> " + width + " height -> " + height);
         //设置渲染（Surface）窗口大小
-        GLES20.glViewport(0, 0, width, height);
-        float aspectRatio = width > height ? (float) width / (float)height : (float)height / (float)width;
-        if (width > height) {
-            Matrix.orthoM(uMatrix, 0, -aspectRatio, aspectRatio, -1f, 1f, -1f, 1f);
-        }else {
-            Matrix.orthoM(uMatrix, 0, -1f, 1f, -aspectRatio, aspectRatio, -1f, 1f);
-        }
+//        GLES20.glViewport(0, 0, width, height);
+//        float aspectRatio = width > height ? (float) width / (float)height : (float)height / (float)width;
+//        if (width > height) {
+//            Matrix.orthoM(uMatrix, 0, -aspectRatio, aspectRatio, -1f, 1f, -1f, 1f);
+//        }else {
+//            Matrix.orthoM(uMatrix, 0, -1f, 1f, -aspectRatio, aspectRatio, -1f, 1f);
+//        }
+        //建立投影矩阵
+        MatrixHelper.perspectiveM(uMatrix, 0, 45f, width * 1.0f / (height * 1.0f), 1f, 10f);
+        //建立模型矩阵
+        Matrix.setIdentityM(modelMatrix, 0);
+        Matrix.translateM(modelMatrix, 0,0f, 0f, -2);//z轴平移
+        float[] tmp = new float[16];
+        //投影矩阵和模型矩阵相乘
+        Matrix.multiplyMM(tmp, 0, uMatrix, 0, modelMatrix, 0);
+        System.arraycopy(tmp, 0, uMatrix, 0, tmp.length);
     }
 
     @Override
