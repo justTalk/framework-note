@@ -139,6 +139,7 @@ public class GlSurfaceRender implements GLSurfaceView.Renderer {
         //建立模型矩阵
         Matrix.setIdentityM(modelMatrix, 0);
         Matrix.translateM(modelMatrix, 0,0f, 0f, -2);//z轴平移
+        Matrix.rotateM(modelMatrix, 0, 60f, 1f, 0f, 0f);//x轴旋转
         float[] tmp = new float[16];
         //投影矩阵和模型矩阵相乘
         Matrix.multiplyMM(tmp, 0, uMatrix, 0, modelMatrix, 0);
