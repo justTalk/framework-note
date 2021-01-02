@@ -1,9 +1,18 @@
 package com.example.framework_note;
 
+import android.app.PendingIntent;
+import android.appwidget.AppWidgetManager;
+import android.content.ComponentName;
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.Menu;
+import android.widget.ImageView;
 
+import com.bumptech.glide.Glide;
+import com.example.framework_note.class2.Test;
+import com.example.framework_note.widget.MyAppWidgetProvider;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
@@ -30,8 +39,7 @@ public class HomeActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                Test.a();
             }
         });
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
@@ -52,5 +60,27 @@ public class HomeActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         return NavigationUI.navigateUp(navController, mAppBarConfiguration)
                 || super.onSupportNavigateUp();
+    }
+
+    private void addAppWidget(){
+        AppWidgetManager appWidgetManager =
+                getSystemService(AppWidgetManager.class);
+        ComponentName myProvider =
+                new ComponentName(this, NewAppWidget.class);
+        if (appWidgetManager.isRequestPinAppWidgetSupported()) {
+            // Create the PendingIntent object only if your app needs to be notified
+            // that the user allowed the widget to be pinned. Note that, if the pinning
+            // operation fails, your app isn't notified.
+            Intent pinnedWidgetCallbackIntent = new Intent();
+
+            // Configure the intent so that your app's broadcast receiver gets
+            // the callback successfully. This callback receives the ID of the
+            // newly-pinned widget (EXTRA_APPWIDGET_ID).
+            PendingIntent successCallback = PendingIntent.getBroadcast(this, 0,
+                    pinnedWidgetCallbackIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+            appWidgetManager.requestPinAppWidget(myProvider, null, successCallback);
+        }
+
     }
 }
