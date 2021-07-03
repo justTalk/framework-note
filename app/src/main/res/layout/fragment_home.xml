@@ -10,8 +10,36 @@
         android:id="@+id/recycler"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginBottom="200dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <com.example.framework_note.render.MyTestFrameLayout
+        android:layout_width="409dp"
+        android:layout_height="198dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/recycler">
+
+        <com.example.framework_note.render.MyTestTextView
+            android:id="@+id/myTestTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="4dp"
+            android:textColor="@color/colorPrimary"
+            android:text="MyTestTextView" />
+    </com.example.framework_note.render.MyTestFrameLayout>
+
+    <TextView
+        android:id="@+id/scrollPage"
+        android:layout_width="72dp"
+        android:layout_height="56dp"
+        android:text="启动滚动页"
+        android:background="@color/colorPrimary"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,48 @@
+plugins {
+  id 'groovy'
+  id 'java'
+  id 'java-gradle-plugin'
+  id 'maven'
+  id 'maven-publish'
+  id 'com.gradle.plugin-publish' version '0.14.0'
+}
+
+dependencies {
+  implementation gradleApi()
+  implementation localGroovy()
+}
+
+allprojects {
+  repositories {
+    jcenter()
+  }
+}
+
+group='com.scam.monitor'
+version='1.0.0'
+//插件名称
+archivesBaseName = 'monitor'
+
+//install {
+//  repositories.mavenInstaller {
+//    pom.version = '0.0.1' // 配置插件版本号
+//    pom.artifactId = 'monitor' // 配置插件标识
+//    pom.groupId = 'com.scam.tool' // 配置插件组织
+//  }
+//}
+uploadArchives {
+  repositories.mavenDeployer {
+    repository(url: uri('pluginOutput'))
+  }
+}
+
+//ext {
+//  //公共组件库
+//  PROJECT_NAME = "scam"
+//
+//  GROUP = "com.scam.tool"
+//  VERSION_NAME = "1.0.0" // aar 的版本
+//  //POM_PACKAGING = "aar" //打包方式
+//  POM_ARTIFACT_ID = "xmonitor" //构建 ID
+//}
+//apply from: "../upload.gradle"

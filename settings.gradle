@@ -6,4 +6,6 @@ pluginManagement {
 }
 include ':acore'
 include ':app'
+include ':spectrum'
 rootProject.name='framework-note'
+include ':gradle-plugin'

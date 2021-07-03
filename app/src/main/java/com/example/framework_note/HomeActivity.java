@@ -5,6 +5,7 @@ import android.appwidget.AppWidgetManager;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Looper;
 import android.util.Log;
 import android.view.View;
 import android.view.Menu;
@@ -35,11 +36,18 @@ public class HomeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_home);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        FloatingActionButton fab = findViewById(R.id.fab);
+        final FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Test.a();
+                Log.d("LMm"," thread count+" +Thread.activeCount());
+                Test.testThreadCrash();
+                fab.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        Log.d("LMm"," thread count+" +Thread.activeCount());
+                    }
+                },2000);
             }
         });
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
