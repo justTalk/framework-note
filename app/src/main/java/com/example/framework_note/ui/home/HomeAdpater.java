@@ -24,6 +24,7 @@ import java.util.List;
 public class HomeAdpater extends RecyclerView.Adapter {
 
     List<String> mData;
+    private OnItemClickListener onItemClickListener;
 
     @NonNull
     @Override
@@ -36,11 +37,29 @@ public class HomeAdpater extends RecyclerView.Adapter {
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         View viewById = holder.itemView.findViewById(R.id.textView2);
         viewById.setBackgroundColor(position % 2 == 1 ? Color.GRAY : Color.RED);
+        viewById.setOnClickListener(new View.OnClickListener() {
+            @Override public void onClick(View v) {
+                if (onItemClickListener != null){
+                    onItemClickListener.onClick(position);
+                }
+            }
+        });
+    }
+
+    public void setOnItemClickListener(
+        OnItemClickListener onItemClickListener) {
+        this.onItemClickListener = onItemClickListener;
     }
 
     @Override
     public int getItemCount() {
         return mData != null ? mData.size() : 0;
+    }
+
+    public interface OnItemClickListener{
+
+        void onClick(int position);
+
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {

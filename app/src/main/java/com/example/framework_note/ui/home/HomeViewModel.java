@@ -17,6 +17,8 @@ public class HomeViewModel extends ViewModel {
 
     public void addFakerData(){
         List<String> all = new ArrayList<>();
+        all.add("motionLayoutTest");
+        all.add("固定image大小，不同背景图片");
         for (int i = 0; i < 100; i++) {
             all.add("hhhhhhh");
         }

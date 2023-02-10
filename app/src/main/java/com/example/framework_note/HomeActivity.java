@@ -41,13 +41,7 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Log.d("LMm"," thread count+" +Thread.activeCount());
-                Test.testThreadCrash();
-                fab.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        Log.d("LMm"," thread count+" +Thread.activeCount());
-                    }
-                },2000);
+                startActivity(new Intent(HomeActivity.this, MainActivity.class));
             }
         });
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
@@ -89,6 +83,5 @@ public class HomeActivity extends AppCompatActivity {
 
             appWidgetManager.requestPinAppWidget(myProvider, null, successCallback);
         }
-
     }
 }
