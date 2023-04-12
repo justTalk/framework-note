@@ -41,7 +41,7 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Log.d("LMm"," thread count+" +Thread.activeCount());
-                startActivity(new Intent(HomeActivity.this, MainActivity.class));
+                startActivity(new Intent(HomeActivity.this, WheelActivity.class));
             }
         });
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
