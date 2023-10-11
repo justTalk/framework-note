@@ -1,9 +1,11 @@
 package com.example.framework_note;
 
+import android.Manifest;
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.content.ComponentName;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Looper;
 import android.util.Log;
@@ -11,7 +13,10 @@ import android.view.View;
 import android.view.Menu;
 import android.widget.ImageView;
 
+import androidx.core.app.AppOpsManagerCompat;
+import androidx.core.content.PermissionChecker;
 import com.bumptech.glide.Glide;
+import com.example.ClapDetector;
 import com.example.framework_note.class2.Test;
 import com.example.framework_note.widget.MyAppWidgetProvider;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -41,7 +46,8 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Log.d("LMm"," thread count+" +Thread.activeCount());
-                startActivity(new Intent(HomeActivity.this, WheelActivity.class));
+                //startActivity(new Intent(HomeActivity.this, WheelActivity.class));
+                new ClapDetector().startClapDetection();
             }
         });
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
@@ -55,6 +61,9 @@ public class HomeActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
+        if (PermissionChecker.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO) != PermissionChecker.PERMISSION_GRANTED) {
+            requestPermissions(new String[]{Manifest.permission.RECORD_AUDIO}, 1001);
+        }
     }
 
     @Override
